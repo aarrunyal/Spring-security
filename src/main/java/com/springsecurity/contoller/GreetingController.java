@@ -3,17 +3,20 @@ package com.springsecurity.contoller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.springsecurity.entities.User;
+import com.springsecurity.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/greetings")
 public class GreetingController {
 
-	
+	@Autowired
+	private UserService userService;
+
 	
 	@GetMapping("/hello")
 	public ResponseEntity<Map<String, String>> sayHello(){
@@ -34,5 +37,11 @@ public class GreetingController {
 		Map<String, String> greetingMessage = new HashMap<>();
 		greetingMessage.put("message","How are you??");
 		return new ResponseEntity<Map<String,String>>(greetingMessage, HttpStatus.OK);
+	}
+
+	@PostMapping("/save-user")
+	public ResponseEntity<User> createUser(@RequestBody User user){
+		User newUser = this.userService.createUser(user);
+		return ResponseEntity.ok(newUser);
 	}
 }
