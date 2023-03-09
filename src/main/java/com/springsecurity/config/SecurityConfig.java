@@ -22,13 +22,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public PasswordEncoder passwordEncoder()  throws  Exception{
+    public PasswordEncoder passwordEncoder() throws Exception {
         return new BCryptPasswordEncoder();
     }
 
-//    Createing users for authorization
+    //    Createing users for authorization
     @Bean
-    public UserDetailsService userDetailsService()  throws  Exception{
+    public UserDetailsService userDetailsService() throws Exception {
 //        UserDetails admin = User.withUsername("aarrunyal")
 //                .password(passwordEncoder().encode("aarrunyal"))
 //                .roles("ADMIN")
@@ -43,10 +43,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/greetings/hello", "/api/greetings/save-user")
+                .requestMatchers("/api/greetings/hello", "/api/greetings/save-user", "/api/greetings/authenticate")
                 .permitAll()
                 .and().
                 authorizeHttpRequests()
@@ -55,13 +55,13 @@ public class SecurityConfig {
                 .and()
                 .formLogin().and().build();
     }
-    
+
     @Bean
-    public AuthenticationProvider authenticationProvider() throws Exception{
-    	DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-    	authenticationProvider.setUserDetailsService(userDetailsService());
-    	authenticationProvider.setPasswordEncoder(passwordEncoder());
-    	return authenticationProvider;
+    public AuthenticationProvider authenticationProvider() throws Exception {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
     }
 
 
